@@ -1,13 +1,17 @@
 import { SleepData } from './sleep-data';
 
 export class OvernightSleepData extends SleepData {
-	private sleepStart:Date;
-	private sleepEnd:Date;
+	public sleepStart:Date;
+	public sleepEnd:Date;
 
 	constructor(sleepStart:Date, sleepEnd:Date) {
 		super();
 		this.sleepStart = sleepStart;
 		this.sleepEnd = sleepEnd;
+	}
+
+	get sleepDay(): Date {
+		return this.sleepEnd;
 	}
 
 	override summaryString():string {
@@ -22,6 +26,8 @@ export class OvernightSleepData extends SleepData {
 	}
 
 	override dateString():string {
-		return "Night of " + this.sleepStart.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+		const night = new Date(this.sleepEnd);
+		night.setDate(night.getDate() - 1);
+		return "Night of " + night.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
 	}
 }
